@@ -40,7 +40,6 @@ def ipclass(ipaim):
     text = ipinfo['data']['properties']['desc']
     if os.path.exists(f".\\{foldername}") is False:
         downloadexpert(0,0,foldername,foldername)
-
     else:
         time.sleep(0.01)
     with open(f".\\{foldername}\\"+"INTRODUCTION.TXT",'w',encoding="UTF-8") as desc:
@@ -99,10 +98,6 @@ def dlcclass(dlcaim):
         for chunk in cover_resp.iter_content(8192):
             coverpic.write(chunk)
     for i in temp:
-        picinfo = {
-            'name':i['card_info']['card_name'],
-            'aim':i['card_info']['card_img']
-            }
         pic = requests.get(i['card_info']['card_img'],headers=headers,stream=True)
         with open(f".\\{foldername}\\{i['card_info']['card_name']}"+".webp",'wb') as spic:
             for chunk in pic.iter_content(8192):
@@ -114,6 +109,9 @@ def dlcclass(dlcaim):
             with open(f".\\{foldername}\\{videoname}"+".mp4",'wb') as video:
                 for chunk in video_resp.iter_content(8192):
                     video.write(chunk)
+        except TypeError:
+            print("no video")
+        try:
             for hidden_item in de_resp['data']['collect_list']['collect_infos']:
                 if hidden_item['card_item'] is not None and hidden_item['effective_forever'] != 0:
                     hiddenresp = requests.get(hidden_item['redeem_item_image'],headers=headers,stream=True)
@@ -121,7 +119,7 @@ def dlcclass(dlcaim):
                         for chunk in hiddenresp.iter_content(8192):
                             hiddenobj.write(chunk)
         except TypeError:
-            print("no video")
+            print("no hidden cards")
     return 0
 status = True
 while status:
